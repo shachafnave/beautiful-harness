@@ -1,0 +1,10 @@
+node_modules
+*.log
+.DS_Store
+
+.env
+.env.*
+*.env
+.claude/settings.local.json
+.claude/worktrees/
+.superpowers/
