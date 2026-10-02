@@ -11,6 +11,10 @@ input=$(cat)
 active=$(printf '%s' "$input" | jq -r '.stop_hook_active // false')
 [ "$active" = "true" ] && exit 0
 
+session=$(printf '%s' "$input" | jq -r '.session_id // "default"' | tr -c 'A-Za-z0-9_\n-' '_')
+state="${TMPDIR:-/tmp}/harness-dod-${session}"
+max_blocks="${HARNESS_MAX_BLOCKS:-3}"
+
 root=$(printf '%s' "$input" | jq -r '.cwd // ""')
 [ -n "$root" ] || root="${CLAUDE_PROJECT_DIR:-.}"
 
@@ -48,6 +52,13 @@ $(git -C "$top" status --porcelain -uall)
 EOF
 
 if [ -n "$structural" ] && [ "$map_touched" -eq 0 ]; then
+  blocks=$(cat "$state" 2>/dev/null || echo 0)
+  if [ "$blocks" -ge "$max_blocks" ]; then
+    rm -f "$state"
+    echo "definition-of-done: blocked ${blocks} times in this session, letting it through. Update ${map_rel} manually." >&2
+    exit 0
+  fi
+  echo $((blocks + 1)) > "$state"
   {
     echo "Definition of done not met: files were added, deleted, or renamed but ${map_rel} was not updated."
     echo "Add, remove, or rename the matching rows in ${map_rel}, then finish. Affected paths:"
@@ -56,4 +67,5 @@ if [ -n "$structural" ] && [ "$map_touched" -eq 0 ]; then
   exit 2
 fi
 
+rm -f "$state"
 exit 0

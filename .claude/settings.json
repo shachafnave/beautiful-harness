@@ -5,17 +5,17 @@
   },
   "permissions": {
     "allow": [
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git branch:*)",
-      "Bash(ls:*)"
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(ls *)"
     ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)"
+      "Bash(git push --force *)",
+      "Bash(git push -f *)"
     ]
   },
   "hooks": {

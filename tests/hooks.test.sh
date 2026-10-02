@@ -119,6 +119,23 @@ mkdir -p "$dod/node_modules/pkg"
 printf 'z\n' > "$dod/node_modules/pkg/index.js"
 expect "ignored directory does not block" 0 "$(run definition-of-done.sh "$(stop_json "$dod")")"
 
+loop="$tmp/loop"
+mkdir -p "$loop/docs"
+git -C "$loop" init -q -b main
+git -C "$loop" config user.name test
+git -C "$loop" config user.email test@example.com
+printf '# map\n' > "$loop/docs/codebase-map.md"
+git -C "$loop" add -A
+git -C "$loop" commit -q -m init
+printf 'x\n' > "$loop/new.txt"
+loop_json=$(jq -n --arg d "$loop" '{hook_event_name:"Stop",cwd:$d,session_id:"loop-test"}')
+export TMPDIR="$tmp"
+expect "loop guard: first block" 2 "$(run definition-of-done.sh "$loop_json")"
+expect "loop guard: second block" 2 "$(run definition-of-done.sh "$loop_json")"
+expect "loop guard: third block" 2 "$(run definition-of-done.sh "$loop_json")"
+expect "loop guard: lets it through after the cap" 0 "$(run definition-of-done.sh "$loop_json")"
+expect "loop guard: counter resets after release" 2 "$(run definition-of-done.sh "$loop_json")"
+
 nomap="$tmp/nomap"
 mkdir -p "$nomap"
 git -C "$nomap" init -q -b main
