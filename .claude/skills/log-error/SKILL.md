@@ -1,6 +1,6 @@
 ---
 name: log-error
-description: Search docs/error-log.md for a known error, then log a new or recurring one with symptom, cause, resolution, and prevention. Use when a build, lint, type, runtime, data-layer, or deploy error appears, and again when it is resolved.
+description: "Search docs/error-log.md for a known error, then log a new or recurring one with symptom, cause, resolution, and prevention. Use when a build, lint, type, runtime, data-layer, or deploy error appears, and again when it is resolved."
 ---
 
 # Log error

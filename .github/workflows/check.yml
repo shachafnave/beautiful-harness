@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -12,7 +15,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y jq shellcheck
-      - name: Template self-check
+      - name: Template self-check (includes the hook tests)
         run: bash scripts/check-template.sh
-      - name: Hook tests
-        run: bash tests/hooks.test.sh

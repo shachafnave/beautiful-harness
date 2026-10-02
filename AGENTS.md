@@ -9,7 +9,7 @@ introduces the deviation.
 
 ## Commands
 
-Skills and hooks read this table. Keep it true.
+Skills read this table. Keep it true.
 
 | Purpose | Command |
 | --- | --- |
@@ -50,8 +50,10 @@ These hold for every change, alongside the code rules below.
 [`docs/codebase-map.md`](./docs/codebase-map.md) lists every file and what it
 is for. Creating a file means adding its row in the same change; deleting or
 renaming one means updating its row in the same change. A change that adds a
-file without a map row is incomplete, not a follow-up. The Stop hook enforces
-this.
+file without a map row is incomplete, not a follow-up. The Stop hook checks the
+uncommitted changes in the working tree against the map: every added or renamed
+path needs a backticked row (or a backticked parent directory row), and a
+deleted path must not keep one.
 
 ### Log every error with its resolution
 

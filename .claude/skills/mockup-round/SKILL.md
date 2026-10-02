@@ -1,6 +1,6 @@
 ---
 name: mockup-round
-description: Run the mockup-before-build flow for any new or changed UI surface: interview, HTML mockup, guideline check, approval gate, plan, build. Use before writing code for a new screen, component, or visible redesign.
+description: "Run the mockup-before-build flow for any new or changed UI surface: interview, HTML mockup, guideline check, approval gate, plan, build. Use before writing code for a new screen, component, or visible redesign."
 ---
 
 # Mockup round
@@ -27,7 +27,8 @@ Pick a round name and save the work as `mockups/<round-name>/<screen>.html`.
 - One file per screen; show each role's view when a surface differs by role.
 
 Add a row for each new file to `docs/codebase-map.md` and a row for the round to
-the table in `mockups/README.md`, in the same change.
+the table in `mockups/README.md` (delete the `_none yet_` placeholder row when
+adding the first one), in the same change.
 
 ## 3. Guideline check
 

@@ -1,6 +1,6 @@
 ---
 name: fresh-review
-description: Dispatch the adversarial-reviewer agent on the current branch so a context that did not write the change tries to break it. Use before opening or merging a PR, and after fixing review findings.
+description: "Dispatch the adversarial-reviewer agent on the current branch so a context that did not write the change tries to break it. Use before opening or merging a PR, and after fixing review findings."
 ---
 
 # Fresh review
@@ -10,10 +10,11 @@ to defeat that belief, so the reviewer must not share it.
 
 ## Steps
 
-1. Make sure the work is committed and note the base branch (the default branch
-   from `AGENTS.md`).
+1. Make sure the work is committed, run `git fetch`, and note the base branch
+   (the default branch from `AGENTS.md`).
 2. Dispatch the `adversarial-reviewer` agent with a prompt that contains only
-   the base branch name and the instruction to review `git diff <base>...HEAD`.
+   the base branch name and the instruction to review the changes against
+   `origin/<base>`.
    Do not include your plan, your reasoning, why you think the change is right,
    or a summary of it. If the agent type is unavailable, use `/code-review`.
 3. Read the findings. Every valid objection quotes the exact line it applies to;

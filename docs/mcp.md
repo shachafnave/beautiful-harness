@@ -65,8 +65,10 @@ A local server started over stdio:
 
 1. **Never commit a secret.** Reference credentials as `${VAR}` or
    `${VAR:-default}` and keep the values in your shell environment or an
-   untracked `.env`. The deny rules in `.claude/settings.json` stop the agent
-   from reading `.env` files.
+   untracked `.env`. The deny rules in `.claude/settings.json` stop the
+   agent's Read tool from opening `.env` files, but a shell command such as
+   `cat .env` is not covered, so keep real secrets out of the project directory
+   where you can.
 2. **Prefer a read-only credential.** Give an MCP server the narrowest token
    that does the job, and a development database or sandbox project rather than
    production.

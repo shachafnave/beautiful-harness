@@ -3,8 +3,8 @@ node_modules
 .DS_Store
 
 .env
-.env.*
+.env.local
+.env.*.local
 *.env
 .claude/settings.local.json
 .claude/worktrees/
-.superpowers/

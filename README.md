@@ -14,14 +14,18 @@ Requires `bash`, `git`, and [`jq`](https://jqlang.github.io/jq/) (the hooks use
 it).
 
 ```bash
-git clone <this-repo-url> beautiful-harness
+git clone https://github.com/shachafnave/beautiful-harness.git
 beautiful-harness/scripts/bootstrap.sh /path/to/your/project
 ```
 
 Bootstrap copies the harness into your project without overwriting anything that
-already exists (add `--force` to overwrite), links `CLAUDE.md` to `AGENTS.md`,
-adds the needed lines to `.gitignore`, and prints the `<<PLACEHOLDER>>` tokens
-you still have to fill in. Then:
+already exists, links `CLAUDE.md` to `AGENTS.md`, adds the needed lines to
+`.gitignore`, and prints the `<<PLACEHOLDER>>` tokens you still have to fill in.
+`--force` overwrites other existing files but never `.claude/settings.json` or
+`.mcp.json`, and never writes through symlinks. If your project already has a
+`.claude/settings.json`, the hooks are copied but not active until you merge the
+`permissions` and `hooks` blocks by hand; bootstrap says so. If you already have
+a real `CLAUDE.md`, it is left alone. Then:
 
 1. Fill in `AGENTS.md`: project name, the Commands table, shared layers, notes.
 2. Fill in `docs/codebase-map.md` with your project's files.
@@ -34,8 +38,8 @@ you still have to fill in. Then:
 | --- | --- | --- |
 | Working agreements | `AGENTS.md` (`CLAUDE.md` symlinks to it) | Six working methods (plan, subagents, self-improvement, verification, elegance, autonomous fixes) plus the code rules |
 | Em dash guard | `.claude/hooks/no-em-dash.sh` | Blocks em dashes in written files, commit messages, and PR bodies |
-| Branch guard | `.claude/hooks/protect-main.sh` | Blocks force pushes, pushes to the default branch, and commits on it |
-| Definition of done | `.claude/hooks/definition-of-done.sh` | Blocks finishing a turn when files were added, deleted, or renamed and the codebase map was not updated |
+| Branch guard | `.claude/hooks/protect-main.sh` | Blocks force pushes, pushes to protected branches, and commits, cherry-picks, reverts, and non-fast-forward merges on them |
+| Definition of done | `.claude/hooks/definition-of-done.sh` | Blocks finishing a turn when uncommitted added or renamed files have no row in the codebase map, or deleted files keep one |
 | Session start | `.claude/hooks/session-start.sh` | Reminds the agent to search the error log and shows the newest entries |
 | `/deploy` | `.claude/skills/deploy` | Verify, migration gate, fresh review, PR, squash-merge pinned to the head SHA, report, reset |
 | `/mockup-round` | `.claude/skills/mockup-round` | Interview, mockup, guideline check, approval gate, plan, build |
@@ -46,25 +50,43 @@ you still have to fill in. Then:
 | Error log | `docs/error-log.md` | Every error hit, with its resolution and prevention |
 | Design guidelines | `docs/design-guidelines.md` | Thirty rules against generated-looking UI and copy |
 | MCP setup | `.mcp.json`, `docs/mcp.md` | Project-scope servers, with rules for secrets and approval |
-| Settings | `.claude/settings.json` | Hook wiring, deny rules for `.env` files and force pushes, attribution off |
+| Settings | `.claude/settings.json` | Hook wiring, a small read-only allow list, deny rules for `.env` reads and force pushes, attribution off |
 | PR template | `.github/pull_request_template.md` | Verification, review outcome, known gaps |
 
 ## How the hooks behave
 
 Hooks receive the tool call as JSON on stdin. Exit code 2 blocks the action and
-feeds stderr back to the agent; exit 0 allows it. Exit 1 means the hook itself
-could not run (for example, `jq` is missing) and is shown without blocking.
+feeds stderr back to the agent; exit 0 allows it; exit 1 is a hook failure that
+is shown without blocking. Without `jq`, `protect-main.sh` and `no-em-dash.sh`
+block when the input looks relevant (a git command, an em dash) and otherwise
+stay out of the way, so you can still install `jq`.
 
-- `no-em-dash.sh` runs before `Write`, `Edit`, `MultiEdit`, and `Bash`, so it
-  also catches `git commit -m` and `gh pr create --body`.
+- `no-em-dash.sh` runs before `Write`, `Edit`, `MultiEdit`, `NotebookEdit`, and
+  `Bash`. For `Bash` it only inspects commands that write prose (`git commit`,
+  `git tag`, `gh pr`, `gh issue`, `gh release`), so searching for the character
+  is allowed.
 - `protect-main.sh` treats `main` and `master` as protected. Override with
-  `HARNESS_PROTECTED_BRANCHES="main develop"`. A first commit in an empty
-  repository is allowed, and `git checkout -b x && git commit` in one command is
-  allowed.
-- `definition-of-done.sh` is silent when `docs/codebase-map.md` does not exist
-  or the directory is not a git repository. Override the map path with
+  `HARNESS_PROTECTED_BRANCHES="main develop"`. It blocks force pushes (including
+  `-fu` and `+refspec`), `--all`, `--mirror`, any push naming a protected branch,
+  a push from a protected branch that names no other branch, and history-changing
+  commands on a protected branch. A first commit in an empty repository is
+  allowed, `git checkout -b x && git commit` in one command is allowed, and
+  `git pull` and `git merge --ff-only` are allowed.
+- `definition-of-done.sh` compares the working tree to `docs/codebase-map.md`:
+  every added, renamed, or untracked path needs its path in backticks in the map
+  (or a backticked parent directory such as `` `src/` ``), and a deleted path
+  must not keep its row. It is silent when the map does not exist or the
+  directory is not a git repository. Override the map path with
   `HARNESS_CODEBASE_MAP` and the ignored paths (a regex) with
-  `HARNESS_MAP_IGNORE`.
+  `HARNESS_MAP_IGNORE`. A per-session cap (`HARNESS_MAX_BLOCKS`, default 3)
+  stops it from looping if the agent cannot satisfy it.
+
+Known limits. These hooks are guardrails against honest mistakes, not a security
+boundary: a command can build a string at runtime (`git push origin $BRANCH`),
+a shell redirect can write a file without the `Write` tool, and the Stop hook
+only sees uncommitted changes, so files that were committed without a map row
+pass. The `Read(**/.env)` deny rules cover the Read tool, not `cat .env`.
+The reviewer agent is read-only by instruction, not by enforcement.
 
 Run the hook tests any time:
 

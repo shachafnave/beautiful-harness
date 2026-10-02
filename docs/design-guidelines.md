@@ -5,7 +5,9 @@ than designed. Every mockup gets checked against this list before it goes up
 for approval (see **Mockup before build** in [`AGENTS.md`](../AGENTS.md)); a
 mockup that breaks one of these goes back for another pass, not forward for a
 yes. The same list applies at build time to anything a mockup did not cover (a
-new state, an error message, a loading view). Never use any of these.
+new state, an error message, a loading view). Each rule is binding where it
+applies. Most forbid something; a few (skeleton loaders, legal links, showing
+the real product) require it.
 
 A few items below (pricing tiers, testimonials, a legal and privacy footer, a
 product-screenshot hero) target public marketing pages. An internal tool may
@@ -56,8 +58,8 @@ built.
     product. Show a screenshot of the real product instead.
 15. No "It's not X, it's Y" headlines. Also avoid "not just X, but Y." Just say
     what the thing is, plainly.
-16. No checkmark bullets before every feature. Use a plain list, plus signs, en
-    dashes, or numbering.
+16. No checkmark bullets before every feature. Use a plain list, plus signs, or
+    numbering.
 
 ## Trust and conversion
 

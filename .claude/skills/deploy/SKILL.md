@@ -1,6 +1,6 @@
 ---
 name: deploy
-description: Ship the current branch to production. Verifies, gets an independent review, opens a PR to the default branch and merges it, which triggers the project's deploy. Use when the user says /deploy, "deploy this", or "ship it".
+description: 'Ship the current branch to production. Verifies, gets an independent review, opens a PR to the default branch and merges it, which triggers the project''s deploy. Use when the user says /deploy, "deploy this", or "ship it".'
 ---
 
 # Deploy
