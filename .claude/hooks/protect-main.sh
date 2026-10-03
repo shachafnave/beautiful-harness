@@ -46,7 +46,8 @@ target=""
 moves=$(printf '%s' "$norm" | grep -oE '(^|[;&|(`[:space:]])(cd|pushd|popd)([[:space:]]|$)|[[:space:]]-C[[:space:]]|GIT_DIR=|--git-dir|--work-tree' | wc -l)
 if [ "$moves" -eq 1 ]; then
   target=$(printf '%s' "$norm" | sed -nE 's/^[[:space:]]*((bash|sh|zsh)[[:space:]]+-c[[:space:]]+)?cd[[:space:]]+([^;&|]*[^;&|[:space:]])[[:space:]]*(&&|;).*/\3/p')
-  [ -n "$target" ] || target=$(printf '%s' "$norm" | sed -nE 's/.*git[[:space:]]+-C[[:space:]]+([^;&|[:space:]]+)[[:space:]]+(commit|cherry-pick|revert|am|merge|push)([[:space:]].*|$)/\1/p')
+  gits=$(printf '%s' "$norm" | grep -oE '(^|[;&|(`[:space:]])git[[:space:]]' | wc -l)
+  [ -n "$target" ] || [ "$gits" -ne 1 ] || target=$(printf '%s' "$norm" | sed -nE 's/.*git[[:space:]]+-C[[:space:]]+([^;&|[:space:]]+)[[:space:]]+(commit|cherry-pick|revert|am|merge|push)([[:space:]].*|$)/\1/p')
 fi
 case "$target" in
   "~"*) target="$HOME${target#\~}" ;;

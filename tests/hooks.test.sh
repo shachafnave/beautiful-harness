@@ -145,6 +145,9 @@ git -C "$other" checkout -q -b feature/y
 git -C "$repo" checkout -q main
 expect "cd into a repo on a feature branch then commit allowed" 0 "$(pm "cd $other && git commit -m change")"
 expect "git -C a repo on a feature branch then commit allowed" 0 "$(pm "git -C $other commit -m change")"
+expect "git -C commit elsewhere does not move a plain commit on main" 2 "$(pm "git -C $other commit -m x && git commit -m y")"
+expect "git -C push elsewhere does not move an earlier commit on main" 2 "$(pm "git commit -m y && git -C $other push")"
+expect "git -C commit elsewhere does not move a bare push on main" 2 "$(pm "git -C $other commit -m x; git push")"
 expect "git -C elsewhere does not move a later commit on main" 2 "$(pm "git -C $other status && git commit -m change")"
 expect "git -C elsewhere does not move a later bare push on main" 2 "$(pm "git -C $other fetch && git push")"
 expect "commit in session repo on main after cd elsewhere and back blocked" 2 "$(pm "cd $other && cd $repo && git commit -m change")"
