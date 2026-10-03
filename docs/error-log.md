@@ -46,3 +46,16 @@ Log the error even when the fix is trivial and even when the error was
 self-inflicted. Do not log errors that are pure typos caught within seconds.
 
 ## Log
+
+### 2026-10-03: protect-main checks the session repo, not the repo the command targets
+
+- **Where:** `.claude/hooks/protect-main.sh`, a session in `beautiful-harness` committing in `~/Code/Projects/harness-testbed`.
+- **Symptom:**
+  ```
+  Blocked: changing history on protected branch main. Create a feature branch first.
+  ```
+  The testbed was on branch `setup`; only the session repo was on `main`.
+- **Cause:** the hook read the branch once from the hook input `cwd` and ignored `cd X &&` and `git -C X`. That false-blocked commits in other repos on feature branches and let commits into another repo's `main` through when the session repo was on a feature branch.
+- **Resolution:** when a command makes exactly one directory change and it is a leading `cd X &&` (or `cd X;`) or a `git -C X` on the history command when it is the only git command, the hook checks the branch of `X` instead of the session repo. Every other command is checked against the session repo, as before.
+- **Prevention:** the cross-repo tests in `tests/hooks.test.sh`. This is a starter template, so the hook stays small: a fuller shell parser was tried and dropped after four review rounds kept finding exotic bypasses.
+- **Known limits:** a command with more than one directory change (`cd a && cd b`) is checked against the session repo, `pushd`, `GIT_DIR=`, `--git-dir`, quoted paths with spaces, subshells, and git hidden behind `if`, `env`, `command`, or backticks are not followed. The hook is a guard rail against accidents, not a security boundary; branch protection on the remote is the real one.
