@@ -4,7 +4,19 @@ set -u
 root="${CLAUDE_PROJECT_DIR:-.}"
 log="$root/docs/error-log.md"
 
-echo "Working methods are in AGENTS.md. Read them before starting."
+agents="$root/AGENTS.md"
+methods=""
+[ -f "$agents" ] && methods=$(awk '/^## Working methods$/ {f=1} f && /^###? / && !/^## Working methods$/ {exit} f {print}' "$agents")
+
+if [ -n "$methods" ]; then
+  echo "The working methods from AGENTS.md apply to this session:"
+  echo
+  printf '%s\n' "$methods"
+  echo
+  echo "The rest of AGENTS.md (code rules, codebase map, error log, mockups) still applies. Read it before starting."
+else
+  echo "Working methods are in AGENTS.md. Read them before starting."
+fi
 
 [ -f "$log" ] || exit 0
 

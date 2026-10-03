@@ -27,3 +27,12 @@ to defeat that belief, so the reviewer must not share it.
 6. Report to the user: what the reviewer found, what was fixed, and what remains.
 
 Never review in the authoring context, however small the diff.
+
+## Red flags
+
+| Thought | Reality |
+| --- | --- |
+| "I'll give the reviewer some context so it understands." | Your context is the belief review exists to defeat. Base branch only. |
+| "This objection is wrong, I'll drop it quietly." | Defend it to the user as a known gap, or fix it. Do not drop it silently. |
+| "Each round finds something new, keep going." | After two rounds of exotic findings, stop and ask whether the design is too big. Simplify, then review. |
+| "The fix is one line, no need to re-review." | One-line fixes introduced regressions here before. Review the fix. |

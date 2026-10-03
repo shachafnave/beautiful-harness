@@ -277,6 +277,19 @@ case "$session_out" in
   *) expect "session-start lists entries and ignores the template block" 0 1 ;;
 esac
 
+methods_proj="$tmp/methods"
+mkdir -p "$methods_proj"
+printf '# P\n\n## Working methods\n\n1. **RULE ONE.** Body.\n\n#### Red flags\n\n| a | b |\n\n### Next section\n\nNOT PRINTED\n' > "$methods_proj/AGENTS.md"
+session_out=$(CLAUDE_PROJECT_DIR="$methods_proj" "$hooks/session-start.sh" 2>&1)
+case "$session_out" in
+  *"RULE ONE"*"| a | b |"*) expect "session-start prints the working methods and red flags" 0 0 ;;
+  *) expect "session-start prints the working methods and red flags" 0 1 ;;
+esac
+case "$session_out" in
+  *"NOT PRINTED"*) expect "session-start stops at the next section" 0 1 ;;
+  *) expect "session-start stops at the next section" 0 0 ;;
+esac
+
 echo
 echo "${pass} passed, ${fail} failed"
 [ "$fail" -eq 0 ]

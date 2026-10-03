@@ -34,3 +34,13 @@ Invoking `/deploy` is the user's explicit instruction to merge.
    and logs and report them.
 8. **Reset the branch.** After the merge, restart the working branch from the
    new default branch before any follow-up work.
+
+## Red flags
+
+| Thought | Reality |
+| --- | --- |
+| "CI will catch it, so I can skip local verification." | CI runs after you push. Verify first; CI is the second check, not the first. |
+| "The reviewer only found nits, merge now." | Nits are fine. Merge once every blocker and should-fix is fixed or reported as a known gap. |
+| "I fixed the findings, no need to review again." | Fixes are new code. The fixes get their own review. |
+| "The checks are still pending, but they always pass." | Merge on green, not on habit. Wait for the result. |
+| "The user said deploy, so the migration can go after." | `/deploy` authorizes the merge, not live data changes. Stop at the gate. |
