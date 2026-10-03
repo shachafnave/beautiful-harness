@@ -29,8 +29,8 @@ a real `CLAUDE.md`, it is left alone. Then:
 
 1. Fill in `AGENTS.md`: project name, the Commands table, shared layers, notes.
 2. Fill in `docs/codebase-map.md` with your project's files.
-3. Start a Claude Code session in the project. The session-start hook confirms
-   the harness is live.
+3. Start a Claude Code session in the project. The session-start hook prints
+   the working methods, which confirms the harness is live.
 
 ## What is in the box
 
@@ -40,7 +40,7 @@ a real `CLAUDE.md`, it is left alone. Then:
 | Em dash guard | `.claude/hooks/no-em-dash.sh` | Blocks em dashes in written files, commit messages, and PR bodies |
 | Branch guard | `.claude/hooks/protect-main.sh` | Blocks force pushes, pushes to protected branches, and commits, cherry-picks, reverts, and non-fast-forward merges on them |
 | Definition of done | `.claude/hooks/definition-of-done.sh` | Blocks finishing a turn when uncommitted added or renamed files have no row in the codebase map, or deleted files keep one |
-| Session start | `.claude/hooks/session-start.sh` | Reminds the agent to search the error log and shows the newest entries |
+| Session start | `.claude/hooks/session-start.sh` | Prints the working methods and red flags from `AGENTS.md`, then the newest error log entries. Runs on startup, resume, clear, and compact, so the rules survive long sessions |
 | `/deploy` | `.claude/skills/deploy` | Verify, migration gate, fresh review, PR, squash-merge pinned to the head SHA, report, reset |
 | `/mockup-round` | `.claude/skills/mockup-round` | Interview, mockup, guideline check, approval gate, plan, build |
 | `/log-error` | `.claude/skills/log-error` | Search the log first, then record symptom, cause, fix, prevention |

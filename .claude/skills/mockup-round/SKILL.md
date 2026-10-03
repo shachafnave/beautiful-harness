@@ -54,3 +54,12 @@ needed, data or schema changes, and how the result will be verified.
 Implement against the approved mockup. Verify in a running instance, click
 through the flow that changed, and attach before and after screenshots taken with
 realistic data. Update the round's status to `Approved, built`.
+
+## Red flags
+
+| Thought | Reality |
+| --- | --- |
+| "I know what they want, skip the interview." | Guessing intent is how mockups get thrown away. Ask first. |
+| "It's a small UI tweak, I'll just build it." | A visible change is a UI surface. Mock it, or confirm the user waived the mockup. |
+| "They said it looks good, that's approval." | Approval is an explicit yes to this mockup. Ask if unsure. |
+| "I'll fix the remaining issues in code." | Iterate on the mockup, not in code. |

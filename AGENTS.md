@@ -22,28 +22,45 @@ Skills read this table. Keep it true.
 
 ## Working methods
 
-These hold for every change, alongside the code rules below.
+These hold for every change, alongside the code rules below. Each one opens with
+its rule in capitals. Breaking the letter of a rule is breaking its spirit;
+there is no reading of these that makes a skipped step acceptable.
 
-1. **Plan before touching anything with three or more moving parts.** The plan
-   lists files touched, helpers needed, schema changes, and how the result will
-   be verified, not only how it will be built. If the work drifts from the plan,
-   stop and re-plan on the spot.
-2. **One task per subagent.** Research and exploration run in subagents, never
-   on the main thread. Harder problems get more subagents, not more patience.
-   The agent that reviews a change is never the agent that wrote it.
-3. **Every correction becomes a written rule.** When the user corrects a
+1. **NO MULTI-PART CHANGE WITHOUT A WRITTEN PLAN.** Anything with three or
+   more moving parts gets a plan first. The plan lists files touched, helpers
+   needed, schema changes, and how the result will be verified, not only how it
+   will be built. If the work drifts from the plan, stop and re-plan on the
+   spot.
+2. **ONE TASK PER SUBAGENT, AND NEVER REVIEW YOUR OWN WORK.** Research and
+   exploration run in subagents, never on the main thread. Harder problems get
+   more subagents, not more patience. The agent that reviews a change is never
+   the agent that wrote it.
+3. **EVERY CORRECTION BECOMES A WRITTEN RULE.** When the user corrects a
    mistake, add the rule to this file or a skill in the same session. Read the
    rules before a relevant task. Iterate until the mistake stops recurring.
-4. **Verification before done.** Self-review confirms assumptions; it does not
-   test them. A passing build and lint is not a working feature. Run the real
-   flow, and have a fresh-context reviewer try to break the change. Every
-   objection the reviewer raises quotes the exact line it applies to.
-5. **Demand elegance, in proportion.** On a real change, pause and ask whether
+4. **NO DONE CLAIM WITHOUT FRESH EVIDENCE.** Self-review confirms assumptions;
+   it does not test them. A passing build and lint is not a working feature.
+   Run the real flow, and have a fresh-context reviewer try to break the
+   change. Every objection the reviewer raises quotes the exact line it applies
+   to.
+5. **DEMAND ELEGANCE, IN PROPORTION.** On a real change, pause and ask whether
    there is a cleaner way. Keep simple, obvious fixes simple, with no extra
    ceremony. Challenge the work before calling it finished.
-6. **Fix bugs autonomously.** A bug report is enough. Read the logs, the error,
-   and the failing check, then resolve it. Do not push context switching back to
-   the user.
+6. **A BUG REPORT IS ENOUGH TO START.** Read the logs, the error, and the
+   failing check, then resolve it. Do not push context switching back to the
+   user.
+
+### Red flags
+
+If you catch yourself thinking one of these, stop and follow the method.
+
+| Thought | Reality |
+| --- | --- |
+| "It's too small to need a plan or a review." | Small diffs hide the bugs nobody looks for. Size changes the ceremony, not the rule. |
+| "The build passes, so it works." | A build proves it compiles. Run the flow you changed. |
+| "I already reviewed it myself." | You review what you meant to write. A fresh context reviews what you wrote. |
+| "I'll add the rule after this task." | The correction is freshest now. Write it in this session. |
+| "I'll ask the user which log to read." | Read it yourself. A bug report is enough to start. |
 
 ### Keep the codebase map current
 

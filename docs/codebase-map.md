@@ -38,7 +38,7 @@ Last regenerated: <<DATE>>.
 | `.claude/hooks/no-em-dash.sh` | PreToolUse hook. Blocks em dashes in written files, commit messages, and PR bodies. |
 | `.claude/hooks/protect-main.sh` | PreToolUse hook. Blocks force pushes, direct pushes to the default branch, and commits on it. |
 | `.claude/hooks/definition-of-done.sh` | Stop hook. Blocks finishing while files were added, deleted, or renamed without a change to this map. |
-| `.claude/hooks/session-start.sh` | SessionStart hook. Reminds the agent to search the error log and shows the newest entries. |
+| `.claude/hooks/session-start.sh` | SessionStart hook. Prints the working methods and red flags from `AGENTS.md`, then the newest error log entries. Runs on startup, resume, clear, and compact. |
 | `.claude/skills/deploy/SKILL.md` | `/deploy`: verify, migration gate, fresh review, PR, squash-merge, report, reset the branch. |
 | `.claude/skills/mockup-round/SKILL.md` | Interview, mockup, guideline check, approval gate, plan, build for UI work. |
 | `.claude/skills/log-error/SKILL.md` | Search the error log, then add an entry in the fixed format. |
