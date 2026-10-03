@@ -132,6 +132,47 @@ expect "push branch named like main prefix allowed" 0 "$(pm 'git push origin mai
 expect "force-with-lease on feature branch allowed" 0 "$(pm 'git push --force-with-lease origin feature/x')"
 expect "push to main from feature branch blocked" 2 "$(pm 'git push origin main')"
 
+other="$tmp/other"
+mkrepo "$other"
+git -C "$other" commit -q --allow-empty -m first
+expect "cd into a repo on main then commit blocked" 2 "$(pm "cd $other && git commit -m change")"
+expect "git -C a repo on main then commit blocked" 2 "$(pm "git -C $other commit -m change")"
+expect "relative cd into a repo on main then commit blocked" 2 "$(pm "cd ../other && git commit -m change")"
+expect "cd into a repo on main then bare push blocked" 2 "$(pm "cd $other && git push")"
+expect "cd inside bash -c into a repo on main then commit blocked" 2 "$(pm "bash -c \"cd $other && git commit -m change\"")"
+git -C "$other" checkout -q -b feature/y
+git -C "$repo" checkout -q main
+expect "cd into a repo on a feature branch then commit allowed" 0 "$(pm "cd $other && git commit -m change")"
+expect "git -C a repo on a feature branch then commit allowed" 0 "$(pm "git -C $other commit -m change")"
+expect "git -C elsewhere does not move a later commit on main" 2 "$(pm "git -C $other status && git commit -m change")"
+expect "git -C elsewhere does not move a later bare push on main" 2 "$(pm "git -C $other fetch && git push")"
+expect "commit in session repo on main after cd elsewhere and back blocked" 2 "$(pm "cd $other && cd $repo && git commit -m change")"
+git -C "$repo" checkout -q feature/x
+
+mainr="$tmp/mainr"
+mkrepo "$mainr"
+git -C "$mainr" commit -q --allow-empty -m first
+mkdir -p "$mainr/sub"
+pmm() {
+  run protect-main.sh "$(bash_json "$1" "$mainr")"
+}
+expect "failed cd then commit on main blocked" 2 "$(pmm 'cd nonexist; git commit -m x')"
+expect "cd - then commit on main blocked" 2 "$(pmm 'cd - && git commit -m x')"
+expect "cd to command substitution then commit on main blocked" 2 "$(pmm 'cd $(git rev-parse --show-toplevel) && git commit -m x')"
+expect "cd with a flag then commit on main blocked" 2 "$(pmm 'cd -P . && git commit -m x')"
+expect "git -C an unresolvable path on main blocked" 2 "$(pmm 'git -C /no/such/dir commit -m x')"
+expect "switch -c then commit on main allowed" 0 "$(pmm 'git switch -c tmp && git commit -m x')"
+git -C "$mainr" branch dev
+expect "cd away and cd - back to main then commit blocked" 2 "$(pmm "cd $other && cd - && git commit -m x")"
+expect "cd inside command substitution then commit on main blocked" 2 "$(pmm "x=\$(cd $other && pwd); git commit -m x")"
+expect "checkout files from a branch then commit on main blocked" 2 "$(pmm 'git checkout dev -- README && git commit -m x')"
+expect "quoted heredoc marker does not hide later lines" 2 "$(pmm "$(printf "echo '<<EOF' >> notes\ngit commit -m x")")"
+expect "heredoc fed to bash is checked" 2 "$(pmm "$(printf 'bash <<EOF\ngit commit -m x\nEOF')")"
+expect "heredoc fed to sh -s is checked" 2 "$(pmm "$(printf 'sh -s <<EOF\ngit commit -m x\nEOF')")"
+expect "here-string does not hide later lines" 2 "$(pmm "$(printf 'cat <<< \"msg\"\ngit push origin main')")"
+expect "commit in command substitution after an assignment blocked" 2 "$(pmm 'x=$(git commit -m y)')"
+expect "command after a heredoc is still checked" 2 "$(pmm "$(printf 'cat > notes.txt <<EOF\nhello\nEOF\ngit commit -m x')")"
+
 custom_out=$(printf '%s' "$(bash_json 'git push origin feat' "$repo")" | HARNESS_PROTECTED_BRANCHES="main develop " "$hooks/protect-main.sh" >/dev/null 2>&1; echo $?)
 expect "trailing space in HARNESS_PROTECTED_BRANCHES is harmless" 0 "$custom_out"
 custom_out=$(printf '%s' "$(bash_json 'git push origin develop' "$repo")" | HARNESS_PROTECTED_BRANCHES="main develop " "$hooks/protect-main.sh" >/dev/null 2>&1; echo $?)

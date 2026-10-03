@@ -42,6 +42,21 @@ block() {
   exit 2
 }
 
+target=""
+moves=$(printf '%s' "$norm" | grep -oE '(^|[;&|(`[:space:]])(cd|pushd|popd)([[:space:]]|$)|[[:space:]]-C[[:space:]]|GIT_DIR=|--git-dir|--work-tree' | wc -l)
+if [ "$moves" -eq 1 ]; then
+  target=$(printf '%s' "$norm" | sed -nE 's/^[[:space:]]*((bash|sh|zsh)[[:space:]]+-c[[:space:]]+)?cd[[:space:]]+([^;&|]*[^;&|[:space:]])[[:space:]]*&&.*/\3/p')
+  [ -n "$target" ] || target=$(printf '%s' "$norm" | sed -nE 's/.*git[[:space:]]+-C[[:space:]]+([^;&|[:space:]]+)[[:space:]]+(commit|cherry-pick|revert|am|merge|push)([[:space:]].*|$)/\1/p')
+fi
+case "$target" in
+  "~"*) target="$HOME${target#\~}" ;;
+esac
+case "$target" in
+  "" | /*) ;;
+  *) target="$cwd/$target" ;;
+esac
+[ -n "$target" ] && [ -d "$target" ] && cwd=$target
+
 branch=$(git -C "$cwd" symbolic-ref --short HEAD 2>/dev/null || true)
 on_protected=0
 for p in $protected; do
