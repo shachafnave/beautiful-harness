@@ -136,6 +136,7 @@ other="$tmp/other"
 mkrepo "$other"
 git -C "$other" commit -q --allow-empty -m first
 expect "cd into a repo on main then commit blocked" 2 "$(pm "cd $other && git commit -m change")"
+expect "cd with a semicolon into a repo on main then commit blocked" 2 "$(pm "cd $other; git commit -m change")"
 expect "git -C a repo on main then commit blocked" 2 "$(pm "git -C $other commit -m change")"
 expect "relative cd into a repo on main then commit blocked" 2 "$(pm "cd ../other && git commit -m change")"
 expect "cd into a repo on main then bare push blocked" 2 "$(pm "cd $other && git push")"
