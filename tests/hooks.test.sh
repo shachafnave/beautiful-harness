@@ -279,7 +279,7 @@ esac
 
 methods_proj="$tmp/methods"
 mkdir -p "$methods_proj"
-printf '# P\n\n## Working methods\n\n1. **RULE ONE.** Body.\n\n#### Red flags\n\n| a | b |\n\n### Next section\n\nNOT PRINTED\n' > "$methods_proj/AGENTS.md"
+printf '# P\n\n## Working methods\n\n1. **RULE ONE.** Body.\n\n### Red flags\n\n| a | b |\n\n### Next section\n\nNOT PRINTED\n' > "$methods_proj/AGENTS.md"
 session_out=$(CLAUDE_PROJECT_DIR="$methods_proj" "$hooks/session-start.sh" 2>&1)
 case "$session_out" in
   *"RULE ONE"*"| a | b |"*) expect "session-start prints the working methods and red flags" 0 0 ;;
@@ -288,6 +288,22 @@ esac
 case "$session_out" in
   *"NOT PRINTED"*) expect "session-start stops at the next section" 0 1 ;;
   *) expect "session-start stops at the next section" 0 0 ;;
+esac
+session_out=$(CLAUDE_PROJECT_DIR="$root" "$hooks/session-start.sh" 2>&1)
+case "$session_out" in
+  *"NO DONE CLAIM WITHOUT FRESH EVIDENCE"*"The build passes, so it works"*) expect "session-start prints methods and red flags from the shipped AGENTS.md" 0 0 ;;
+  *) expect "session-start prints methods and red flags from the shipped AGENTS.md" 0 1 ;;
+esac
+case "$session_out" in
+  *"Keep the codebase map current"*) expect "session-start stops before the codebase map section of the shipped AGENTS.md" 0 1 ;;
+  *) expect "session-start stops before the codebase map section of the shipped AGENTS.md" 0 0 ;;
+esac
+fallback_proj="$tmp/fallback"
+mkdir -p "$fallback_proj"
+session_out=$(CLAUDE_PROJECT_DIR="$fallback_proj" "$hooks/session-start.sh" 2>&1)
+case "$session_out" in
+  *"Working methods are in AGENTS.md"*) expect "session-start falls back to a pointer without AGENTS.md" 0 0 ;;
+  *) expect "session-start falls back to a pointer without AGENTS.md" 0 1 ;;
 esac
 
 echo

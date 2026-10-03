@@ -29,8 +29,8 @@ a real `CLAUDE.md`, it is left alone. Then:
 
 1. Fill in `AGENTS.md`: project name, the Commands table, shared layers, notes.
 2. Fill in `docs/codebase-map.md` with your project's files.
-3. Start a Claude Code session in the project. The session-start hook confirms
-   the harness is live.
+3. Start a Claude Code session in the project. The session-start hook prints
+   the working methods, which confirms the harness is live.
 
 ## What is in the box
 

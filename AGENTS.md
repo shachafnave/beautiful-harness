@@ -50,7 +50,7 @@ there is no reading of these that makes a skipped step acceptable.
    failing check, then resolve it. Do not push context switching back to the
    user.
 
-#### Red flags
+### Red flags
 
 If you catch yourself thinking one of these, stop and follow the method.
 

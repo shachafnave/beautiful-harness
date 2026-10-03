@@ -6,7 +6,7 @@ log="$root/docs/error-log.md"
 
 agents="$root/AGENTS.md"
 methods=""
-[ -f "$agents" ] && methods=$(awk '/^## Working methods$/ {f=1} f && /^###? / && !/^## Working methods$/ {exit} f {print}' "$agents")
+[ -f "$agents" ] && methods=$(awk '/^## Working methods$/ {f=1} f && /^###? / && !/^## Working methods$/ && !/^### Red flags$/ {exit} f {print}' "$agents")
 
 if [ -n "$methods" ]; then
   echo "The working methods from AGENTS.md apply to this session:"
