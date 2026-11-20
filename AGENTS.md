@@ -15,6 +15,7 @@ Skills read this table. Keep it true.
 | --- | --- |
 | Install | `<<INSTALL_COMMAND>>` |
 | Dev server | `<<DEV_COMMAND>>` |
+| Demo instance | `<<DEMO_COMMAND>>` |
 | Build | `<<BUILD_COMMAND>>` |
 | Lint | `<<LINT_COMMAND>>` |
 | Test | `<<TEST_COMMAND>>` |
@@ -90,7 +91,8 @@ New screens, new components, and visible redesigns go through, in order:
    `mockups/<round-name>/<screen>.html`, with realistic data and the app's real
    styling. Check it against every rule in
    [`docs/design-guidelines.md`](./docs/design-guidelines.md) before presenting
-   it. A mockup that breaks a guideline goes back for another pass.
+   it. A mockup that breaks a guideline goes back for another pass. Run the
+   [required design skills](#required-design-skills) first.
 3. **Approval.** The mockup is the gate. Wait for an explicit yes. Iterate on
    the mockup, not in code.
 4. **Plan.** Once approved, write the implementation plan.
@@ -98,6 +100,28 @@ New screens, new components, and visible redesigns go through, in order:
 
 Pure bug fixes, refactors, and backend-only work skip the mockup and go straight
 to plan and build. Use the `mockup-round` skill.
+
+### Required design skills
+
+The mockup flow runs these skills, vendored in `.claude/skills/` and recorded in
+`skills-lock.json` (source, license, folder hash). Invoke each with the specific screen and question, never
+bare: a bare call returns only a greeting. Where a skill and
+[`docs/design-guidelines.md`](./docs/design-guidelines.md) disagree, the
+guidelines win; the skills supply craft (type, motion, press and gesture feel),
+not materials. Ignore a pointer to a skill that is not installed.
+
+| When | Skill | Required |
+| --- | --- | --- |
+| Mockup step | `apple-design`, `emil-design-eng` | Yes |
+| Mockup step | `impeccable` | If installed |
+| Mockup shows motion (transitions, sheets, press, gestures) | `animate` | Yes |
+| Before presenting the mockup | `break-ui` | Yes |
+| After build, when the change includes motion | `review-animations` | Yes |
+
+A mockup is not presented until every required row that applies has run.
+`review-animations` can only be run by the user (its frontmatter disables model
+invocation). When the change includes motion, ask the user to run
+`/review-animations` and wait for the result; never claim it ran.
 
 ## Code rules
 
@@ -117,7 +141,9 @@ to plan and build. Use the `mockup-round` skill.
   semicolon, a colon, or parentheses, whichever the sentence needs. In tables
   and forms, an empty optional value renders blank and a missing number renders
   `n/a`. En dashes stay allowed in numeric ranges (`1–5`, `50–79%`). The
-  PreToolUse hook enforces this.
+  PreToolUse hook enforces this. Vendored third-party skills listed in
+  `skills-lock.json` are kept verbatim, so the em dash and no-comments rules do
+  not apply inside their folders.
 - **Never leave comments in the repo.** The standard is zero comments: no
   explanatory comments or docblocks, TODO or FIXME notes, lint or type
   suppression directives, and no commented-out code. Express intent through
@@ -130,12 +156,23 @@ to plan and build. Use the `mockup-round` skill.
   diff. Resolve what the reviewer finds before merging.
 - **Verify locally.** Run the build, lint, and test commands above for every
   change, plus any test covering what you changed.
+- **Rerun the full suite after every rebase.** A long-open branch rebased onto
+  new work runs the full test suite again, not only build and lint.
+- **Schema changes are new migrations.** Never edit a migration that has been
+  applied. Apply a new one to the live system before merging code that reads
+  the new shape.
+- **Live data is outward-facing.** Confirm with the user before the first write
+  to a live system, and read untrusted input files with an isolated interpreter
+  in their own folder.
 - **Verify non-trivial UI changes in a running instance** before calling a
-  change done. Click through the flow you changed; a passing build is not the
-  same as a working feature.
+  change done. Use the demo instance (`<<DEMO_COMMAND>>` in the Commands table:
+  seeded data, never live data; a project with none writes `n/a` and the
+  reason, and uses its dev instance with seed data). Click through the flow you
+  changed; a passing build is not the same as a working feature.
 - **Front-end changes ship with screenshots** of the real running app with
   realistic data (before and after for changes to something that already
-  existed).
+  existed), committed under `docs/screenshots/<feature>/` as `before-*.png` and
+  `after-*.png`.
 
 ## Project notes
 

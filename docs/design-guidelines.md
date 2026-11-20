@@ -9,6 +9,11 @@ new state, an error message, a loading view). Each rule is binding where it
 applies. Most forbid something; a few (skeleton loaders, legal links, showing
 the real product) require it.
 
+The vendored design skills (see **Required design skills** in `AGENTS.md`)
+supply craft: type, motion, press and gesture feel. They do not override these
+rules. Where a skill recommends something a rule here forbids (blurred
+translucent layers, gradient scroll masks), the rule wins.
+
 A few items below (pricing tiers, testimonials, a legal and privacy footer, a
 product-screenshot hero) target public marketing pages. An internal tool may
 have none of them today; keep them in mind the day a public-facing page gets
@@ -18,9 +23,10 @@ built.
 
 1. No harsh gradients. No gradient hero backgrounds, gradient buttons, or big
    multi-hue sweeps. Use one flat brand color, or a real photograph.
-2. No default icon-everywhere. Don't put the same starter icon set with
-   identical strokes on every card. Use typographic glyphs (`+`, arrows,
-   asterisks), numbers, or no icons at all.
+2. No decorative icons. Icons appear only on action buttons, always as one set
+   beside the button's label and in the button's own text color. Never put
+   icons on cards, headings, feature blocks, or empty states. Elsewhere use
+   typographic glyphs (`+`, arrows, asterisks), numbers, or no icons at all.
 3. No pure-white background. A white body with gray borders is the unstyled
    default. Use a tinted paper tone, or commit to a dark ground.
 4. No rainbow coloring. One hue per feature card, five hues per page screams
@@ -44,7 +50,8 @@ built.
    tell, not just a style rule.
 10. No default starter fonts. No Inter, Geist, Space Grotesk, or Roboto as the
     brand voice. Use a self-hosted typeface with character: one display face
-    plus one text face.
+    plus one text face. Sizes come from one scale in `rem`, with tighter
+    tracking as size grows.
 
 ## Components and copy
 
@@ -94,6 +101,9 @@ built.
 29. No neon colors. No electric blue, lime, or cyan accents. Desaturate.
 30. No default pastel fills. No light blue or light green tag and card fills. Go
     two-tone: ink and paper, or neutrals derived from the brand hue.
+31. Every action control has a press state. A short scale or tint change on
+    `:active`, switched off under `prefers-reduced-motion`. A control that looks
+    the same pressed and unpressed reads as broken.
 
 ## Recording the project's own position
 
@@ -101,3 +111,8 @@ When the app already breaks a rule from before this list was adopted, add a
 short section here naming the rule, the spot, and the decision (fix next time
 that screen is touched, or accept). A visible change to shipped screens goes
 through the mockup workflow like any other, not a drive-by palette swap.
+
+Where a rule can be checked by scanning source (no raw color values outside
+tokens, no gradients, no colored side stripes, a press state on every action
+class, text sizes from the scale), write it as a test in the project. Mechanical
+guards catch regressions a mockup check cannot see.
