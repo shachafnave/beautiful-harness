@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "animate": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/emilkowalski/skills.git",
+      "skillPath": "skills/animate/SKILL.md",
+      "license": "MIT",
+      "computedHash": "6fbe4fb023d7b23d62d0ad9981ca9434cd6abc997907b8bfd1db915e577a12da"
+    },
+    "apple-design": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/emilkowalski/skills.git",
+      "skillPath": "skills/apple-design/SKILL.md",
+      "license": "MIT",
+      "computedHash": "78dd9eed739872cc8b1dc73974cc8922e0656214f73cd70989f7c205301cef61"
+    },
+    "break-ui": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/emilkowalski/skills.git",
+      "skillPath": "skills/break-ui/SKILL.md",
+      "license": "MIT",
+      "computedHash": "1e727546f53ddec1727023e6a18a171617328cf816d52f722b1bc8159decf09f"
+    },
+    "emil-design-eng": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/emilkowalski/skills.git",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "license": "MIT",
+      "computedHash": "9109af5a795d9386633eebecfa96e79d21e721ace06d85f2d03e1b7606a69824"
+    },
+    "review-animations": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/emilkowalski/skills.git",
+      "skillPath": "skills/review-animations/SKILL.md",
+      "license": "MIT",
+      "computedHash": "610163236942480a92b014632f8cc690778a4a7863ef8bf151f31be62efa14bb"
+    }
+  }
+}

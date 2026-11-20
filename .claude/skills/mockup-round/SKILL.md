@@ -25,6 +25,10 @@ Pick a round name and save the work as `mockups/<round-name>/<screen>.html`.
 - Realistic data from the project's seed or fixtures, never lorem ipsum.
 - The app's real design tokens, read from its stylesheet, not invented ones.
 - One file per screen; show each role's view when a surface differs by role.
+- Run the required design skills from `AGENTS.md` (Required design skills)
+  before drawing, each invoked with the specific screen and question, never
+  bare. Where a skill and the guidelines disagree, the guidelines win. Ignore a
+  pointer to a skill that is not installed.
 
 Add a row for each new file to `docs/codebase-map.md` and a row for the round to
 the table in `mockups/README.md` (delete the `_none yet_` placeholder row when
@@ -35,7 +39,8 @@ adding the first one), in the same change.
 Before presenting, read `docs/design-guidelines.md` and check the mockup against
 every rule, one by one. Fix violations first. A mockup that breaks a guideline
 goes back for another pass, not forward for approval. State in your message
-that the check was done and which rules needed fixing.
+that the check was done and which rules needed fixing. Run `break-ui` on the
+mockup before presenting it, and say which required skills ran.
 
 ## 4. Approval
 
@@ -51,9 +56,13 @@ needed, data or schema changes, and how the result will be verified.
 
 ## 6. Build
 
-Implement against the approved mockup. Verify in a running instance, click
-through the flow that changed, and attach before and after screenshots taken with
-realistic data. Update the round's status to `Approved, built`.
+Implement against the approved mockup. Verify in the demo instance (the Demo
+instance row in `AGENTS.md`), click through the flow that changed, and commit
+before and after screenshots taken with realistic data under
+`docs/screenshots/<feature>/` as `before-*.png` and `after-*.png`. If the change
+includes motion, ask the user to run `/review-animations` (the model cannot
+invoke that skill) and wait for the result. Update the round's status to
+`Approved, built`.
 
 ## Red flags
 
@@ -63,3 +72,4 @@ realistic data. Update the round's status to `Approved, built`.
 | "It's a small UI tweak, I'll just build it." | A visible change is a UI surface. Mock it, or confirm the user waived the mockup. |
 | "They said it looks good, that's approval." | Approval is an explicit yes to this mockup. Ask if unsure. |
 | "I'll fix the remaining issues in code." | Iterate on the mockup, not in code. |
+| "The skill says to use blur, so I will." | The guidelines win where they disagree with a skill. Use solid surfaces. |

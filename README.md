@@ -25,7 +25,11 @@ already exists, links `CLAUDE.md` to `AGENTS.md`, adds the needed lines to
 `.mcp.json`, and never writes through symlinks. If your project already has a
 `.claude/settings.json`, the hooks are copied but not active until you merge the
 `permissions` and `hooks` blocks by hand; bootstrap says so. If you already have
-a real `CLAUDE.md`, it is left alone. Then:
+a real `CLAUDE.md`, it is left alone. Vendored skill folders are copied whole and
+never replaced, and an existing `skills-lock.json` or `THIRD_PARTY_LICENSES.md`
+is never overwritten (merge them by hand); if a
+skill folder already exists in your project, that skill's pin does not hold
+there. Then:
 
 1. Fill in `AGENTS.md`: project name, the Commands table, shared layers, notes.
 2. Fill in `docs/codebase-map.md` with your project's files.
@@ -48,7 +52,9 @@ a real `CLAUDE.md`, it is left alone. Then:
 | Reviewer agent | `.claude/agents/adversarial-reviewer.md` | Read-only; every objection must quote the exact line |
 | Codebase map | `docs/codebase-map.md` | Every file and its purpose; part of the definition of done |
 | Error log | `docs/error-log.md` | Every error hit, with its resolution and prevention |
-| Design guidelines | `docs/design-guidelines.md` | Thirty rules against generated-looking UI and copy |
+| Design guidelines | `docs/design-guidelines.md` | Thirty-one rules against generated-looking UI and copy |
+| Design skills | `.claude/skills/{animate,apple-design,break-ui,emil-design-eng,review-animations}`, `skills-lock.json`, `THIRD_PARTY_LICENSES.md` | Third-party MIT skills copied in and pinned by hash; the mockup flow requires them |
+| Skills check | `scripts/check-skills.sh` | Verifies the lockfile and the required-skills table; `--hash <dir>` prints a folder hash |
 | MCP setup | `.mcp.json`, `docs/mcp.md` | Project-scope servers, with rules for secrets and approval |
 | Settings | `.claude/settings.json` | Hook wiring, a small read-only allow list, deny rules for `.env` reads and force pushes, attribution off |
 | PR template | `.github/pull_request_template.md` | Verification, review outcome, known gaps |
@@ -105,12 +111,33 @@ bash tests/hooks.test.sh
 - **Change the design rules.** Edit `docs/design-guidelines.md` and record any
   deliberate exceptions in its last section.
 
+## Vendored design skills
+
+Five third-party skills (`apple-design`, `emil-design-eng`, `animate`,
+`review-animations`, `break-ui`, from `emilkowalski/skills`, MIT) live in
+`.claude/skills/` as real files and are pinned in `skills-lock.json`. The
+mockup flow requires them (see **Required design skills** in `AGENTS.md`).
+`impeccable` is optional and not vendored.
+
+- **Verbatim.** The files are never edited. They contain em dashes, so the
+  self-check skips the folders listed in the lockfile; the no-em-dash hook still
+  blocks new ones in edits.
+- **Updating a skill.** Copy the new upstream folder over the old one, run
+  `bash scripts/check-skills.sh --hash .claude/skills/<name>`, and put the
+  digest in `skills-lock.json` in the same change.
+- **Dangling pointers.** The skills mention skills that are not vendored
+  (`gestures`, `choreograph`, and others). Ignore those pointers.
+- **Where the pin holds.** `scripts/check-skills.sh` runs in this repository's
+  self-check and is not copied by bootstrap. Bootstrap copies skill folders
+  whole, skips any folder that already exists, and says so.
+
 ## Keeping the template honest
 
 `scripts/check-template.sh` validates the JSON files, the `CLAUDE.md` symlink,
-skill and agent frontmatter, hook modes and wiring, the absence of em dashes and
-of project-specific leftovers, the hook tests, and a bootstrap into a scratch
-repository. CI runs it on every push and pull request.
+skill and agent frontmatter, hook modes and wiring, the vendored skill hashes and
+the required-skills table, the absence of em dashes and of project-specific
+leftovers, the hook tests, and a bootstrap into a scratch repository. CI runs it
+on every push and pull request.
 
 ## Conventions this repo follows itself
 

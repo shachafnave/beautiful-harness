@@ -34,6 +34,10 @@ copied=0
 skipped=0
 settings_skipped=0
 agents_skipped=0
+lock_skipped=0
+license_skipped=0
+vendored_skipped=""
+vendored_skills="animate apple-design break-ui emil-design-eng review-animations"
 
 copy_file() {
   local rel=$1 merge_only=${2:-0}
@@ -52,11 +56,33 @@ copy_file() {
       if [ "$rel" = ".claude/settings.json" ]; then
         settings_skipped=1
       fi
+      if [ "$rel" = "skills-lock.json" ]; then
+        lock_skipped=1
+      fi
+      if [ "$rel" = "THIRD_PARTY_LICENSES.md" ]; then
+        license_skipped=1
+      fi
       return
     fi
   fi
   cp -p "$from" "$to"
   echo "copy   $rel"
+  copied=$((copied + 1))
+}
+
+copy_dir() {
+  local rel=$1
+  local from="$src/$rel"
+  local to="$target/$rel"
+  if [ -e "$to" ] || [ -L "$to" ]; then
+    echo "skip   $rel/ (exists)"
+    skipped=$((skipped + 1))
+    vendored_skipped="$vendored_skipped ${rel##*/}"
+    return
+  fi
+  mkdir -p "$(dirname "$to")"
+  cp -pR "$from" "$to"
+  echo "copy   $rel/"
   copied=$((copied + 1))
 }
 
@@ -83,6 +109,12 @@ done
 
 copy_file .claude/settings.json 1
 copy_file .mcp.json 1
+
+for name in $vendored_skills; do
+  copy_dir ".claude/skills/$name"
+done
+copy_file skills-lock.json 1
+copy_file THIRD_PARTY_LICENSES.md 1
 
 if [ -f "$target/CLAUDE.md" ] && [ ! -L "$target/CLAUDE.md" ] && [ ! -e "$target/AGENTS.md" ]; then
   echo "skip   AGENTS.md (a real CLAUDE.md exists)"
@@ -146,11 +178,29 @@ if [ "$agents_skipped" -eq 1 ]; then
   echo "$src/AGENTS.md into it, then run: ln -s AGENTS.md CLAUDE.md"
 fi
 
+if [ -n "$vendored_skipped" ]; then
+  echo
+  echo "WARNING: these vendored skills already existed and were not replaced, so their pin does not hold:"
+  for name in $vendored_skipped; do
+    echo "  $name"
+  done
+fi
+
+if [ "$lock_skipped" -eq 1 ]; then
+  echo
+  echo "NOTE: skills-lock.json already existed. Merge the entries from $src/skills-lock.json into it by hand."
+fi
+
+if [ "$license_skipped" -eq 1 ]; then
+  echo
+  echo "NOTE: THIRD_PARTY_LICENSES.md already existed. Add the MIT notice for the vendored skills from $src/THIRD_PARTY_LICENSES.md to it by hand."
+fi
+
 echo
 echo "Placeholders left to fill in:"
 (cd "$target" && grep -rnE '<<[A-Z_]+>>' AGENTS.md docs 2>/dev/null) || echo "  none"
 
 if [ "$skipped" -gt 0 ]; then
   echo
-  echo "Skipped files already existed. Merge them by hand, or re-run with --force to overwrite (settings.json and .mcp.json are never overwritten)."
+  echo "Skipped files already existed. Merge them by hand, or re-run with --force to overwrite (settings.json, .mcp.json, skills-lock.json and THIRD_PARTY_LICENSES.md are never overwritten, and an existing skill folder is never replaced)."
 fi
