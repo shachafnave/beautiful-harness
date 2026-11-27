@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="t d">
+  <title id="t">beautiful-harness overview</title>
+  <desc id="d">Rules in AGENTS.md are split in two. Checkable rules are enforced by hooks. Judgment rules live in skills and an adversarial reviewer. Both guard the agent session.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#161b22"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6e7681"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+      .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+      .eyebrow { font-size: 12px; letter-spacing: 2px; fill: #8b949e; font-weight: 600; }
+      .h { font-size: 20px; font-weight: 700; fill: #f0f6fc; }
+      .sub { font-size: 14px; fill: #8b949e; }
+      .row { font-size: 14px; fill: #c9d1d9; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="560" rx="16" fill="url(#bg)"/>
+  <rect x="0.5" y="0.5" width="1199" height="559" rx="15.5" fill="none" stroke="#30363d"/>
+
+  <text x="60" y="64" class="eyebrow">CLAUDE CODE HARNESS</text>
+  <text x="60" y="108" font-size="40" font-weight="800" fill="#f0f6fc">beautiful-harness</text>
+  <text x="60" y="140" class="sub" style="font-size:16px">Rules a machine can check are enforced. Rules that need judgment have an owner.</text>
+
+  <g>
+    <rect x="60" y="184" width="300" height="316" rx="12" fill="#0d1117" stroke="#30363d"/>
+    <rect x="60" y="184" width="300" height="4" rx="2" fill="#2f81f7"/>
+    <text x="84" y="226" class="eyebrow">ENFORCED BY HOOKS</text>
+    <text x="84" y="256" class="h">Guardrails</text>
+    <text x="84" y="300" class="row mono">no-em-dash.sh</text>
+    <text x="84" y="334" class="row mono">protect-main.sh</text>
+    <text x="84" y="368" class="row mono">definition-of-done.sh</text>
+    <text x="84" y="402" class="row mono">session-start.sh</text>
+    <text x="84" y="450" class="sub">Three block the action outright.</text>
+    <text x="84" y="472" class="sub">One reloads the rules each session.</text>
+  </g>
+
+  <g>
+    <rect x="450" y="184" width="300" height="316" rx="12" fill="#0d1117" stroke="#30363d"/>
+    <rect x="450" y="184" width="300" height="4" rx="2" fill="#3fb950"/>
+    <text x="474" y="226" class="eyebrow">AGREED IN PROSE</text>
+    <text x="474" y="256" class="h">AGENTS.md</text>
+    <text x="474" y="300" class="row">Working methods</text>
+    <text x="474" y="334" class="row">Code rules</text>
+    <text x="474" y="368" class="row">Red flags table</text>
+    <text x="474" y="402" class="row">Codebase map, error log</text>
+    <text x="474" y="450" class="sub">One file, read by every tool.</text>
+    <text x="474" y="472" class="sub">CLAUDE.md symlinks to it.</text>
+  </g>
+
+  <g>
+    <rect x="840" y="184" width="300" height="316" rx="12" fill="#0d1117" stroke="#30363d"/>
+    <rect x="840" y="184" width="300" height="4" rx="2" fill="#d29922"/>
+    <text x="864" y="226" class="eyebrow">JUDGED BY SKILLS</text>
+    <text x="864" y="256" class="h">Workflows</text>
+    <text x="864" y="300" class="row mono">/deploy</text>
+    <text x="864" y="334" class="row mono">/mockup-round</text>
+    <text x="864" y="368" class="row mono">/fresh-review</text>
+    <text x="864" y="402" class="row mono">/log-error</text>
+    <text x="864" y="450" class="sub">A fresh-context reviewer</text>
+    <text x="864" y="472" class="sub">tries to break every change.</text>
+  </g>
+
+  <path d="M360 342 H440" stroke="#6e7681" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path d="M840 342 H760" stroke="#6e7681" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+</svg>
