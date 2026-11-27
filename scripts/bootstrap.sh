@@ -37,7 +37,7 @@ agents_skipped=0
 lock_skipped=0
 license_skipped=0
 vendored_skipped=""
-vendored_skills="animate apple-design break-ui emil-design-eng review-animations"
+vendored_skills="animate apple-design brag-slim break-ui emil-design-eng review-animations"
 
 copy_file() {
   local rel=$1 merge_only=${2:-0}
