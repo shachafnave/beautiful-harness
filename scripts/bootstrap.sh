@@ -151,7 +151,7 @@ touch "$gitignore"
 if [ -s "$gitignore" ] && [ "$(tail -c 1 "$gitignore" | wc -l | tr -d ' ')" -eq 0 ]; then
   echo >> "$gitignore"
 fi
-for line in ".claude/settings.local.json" ".claude/worktrees/" ".env" ".env.local" ".env.*.local"; do
+for line in ".claude/settings.local.json" ".claude/worktrees/" ".env" ".env.local" ".env.*.local" "brag-output/"; do
   grep -qxF "$line" "$gitignore" || echo "$line" >> "$gitignore"
 done
 

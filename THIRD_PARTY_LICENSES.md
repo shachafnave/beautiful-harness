@@ -1,6 +1,6 @@
 # Third-party licenses
 
-The skills under `.claude/skills/` named in `skills-lock.json` (animate, apple-design, break-ui, emil-design-eng, review-animations) come from https://github.com/emilkowalski/skills and are used under its MIT license, reproduced below. The `brag-slim` skill comes from https://github.com/latent-spaces/brag under its MIT license, reproduced after the first.
+The skills under `.claude/skills/` named in `skills-lock.json` (animate, apple-design, break-ui, emil-design-eng, review-animations) come from https://github.com/emilkowalski/skills and are used under its MIT license, reproduced below. The `brag-slim` skill comes from https://github.com/latent-spaces/brag under its MIT license, reproduced after the first (Shunit Haviv Hakimi, copyright holder).
 
 MIT License
 

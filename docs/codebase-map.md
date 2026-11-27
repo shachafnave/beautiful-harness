@@ -86,7 +86,7 @@ copied into a project by `scripts/bootstrap.sh`.
 | --- | --- |
 | `README.md` | What the template is, how to adopt it, what each piece does. |
 | `LICENSE` | MIT license. |
-| `.gitignore` | Ignored paths. |
+| `.gitignore` | Ignored paths, including `brag-output/` from the optional `brag-slim` skill. |
 | `.github/workflows/check.yml` | CI: runs the template self-check and the hook tests. |
 | `scripts/bootstrap.sh` | Copies the harness into a target project without overwriting existing files. |
 | `scripts/check-skills.sh` | Verifies each `skills-lock.json` entry (folder, frontmatter name, license, sha256). `--hash <dir>` prints a folder hash for updating the lockfile. |
