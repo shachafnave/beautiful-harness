@@ -94,3 +94,4 @@ copied into a project by `scripts/bootstrap.sh`.
 | `tests/hooks.test.sh` | Feeds fixture JSON to every hook and asserts the exit codes. |
 | `docs/superpowers/specs/` | Written designs for planned work on the template, dated. Approved before the plan is written. |
 | `docs/superpowers/plans/` | Implementation plans for that work, dated. |
+| `docs/assets/hero.svg` | Hero graphic shown at the top of `README.md`. |

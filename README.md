@@ -1,12 +1,43 @@
+<div align="center">
+
 # beautiful-harness
 
-A reusable Claude Code harness: the working agreements, skills, agent, hooks,
-and doc scaffolds that make an AI-assisted project predictable. It started as
-the process of one real product and was generalized to be stack-neutral.
+**A Claude Code harness that makes AI-assisted projects predictable.**
+Working agreements, hooks, skills, and a reviewer agent. Stack-neutral.
 
-The idea: rules written in prose get forgotten, so the ones that can be checked
-by a machine are enforced by hooks, and the ones that need judgment live in
-skills and an adversarial reviewer.
+<p>
+  <a href="https://github.com/shachafnave/beautiful-harness/actions/workflows/check.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/shachafnave/beautiful-harness/check.yml?branch=main&style=for-the-badge&label=CI&labelColor=000000"></a>
+  <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/LICENSE-MIT-2f81f7?style=for-the-badge&labelColor=000000"></a>
+  <img alt="Built for Claude Code" src="https://img.shields.io/badge/BUILT_FOR-CLAUDE_CODE-d97757?style=for-the-badge&labelColor=000000">
+  <img alt="Stack neutral" src="https://img.shields.io/badge/STACK-NEUTRAL-6e7681?style=for-the-badge&labelColor=000000">
+  <a href="https://github.com/shachafnave/beautiful-harness/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/shachafnave/beautiful-harness?style=for-the-badge&labelColor=000000&color=d29922"></a>
+</p>
+
+<p>
+  <a href="#quickstart">Quickstart</a> ·
+  <a href="#what-is-in-the-box">What is in the box</a> ·
+  <a href="#how-the-hooks-behave">Hooks</a> ·
+  <a href="#customizing">Customizing</a> ·
+  <a href="#license">License</a>
+</p>
+
+<img alt="Rules enforced by hooks, agreed in AGENTS.md, and judged by skills" src="docs/assets/hero.svg" width="100%">
+
+</div>
+
+## Why
+
+Rules written in prose get forgotten. This harness splits them in two: the ones
+a machine can check are enforced by hooks, and the ones that need judgment live
+in skills and an adversarial reviewer. It started as the process of one real
+product and was generalized to be stack-neutral.
+
+| Without a harness | With it |
+| --- | --- |
+| "Remember to update the docs" | A Stop hook blocks the turn while a new file has no codebase map row |
+| "Do not push to main" | A hook blocks force pushes, pushes to protected branches, and commits made on them |
+| "Please review your own work" | A fresh-context reviewer tries to break the diff and quotes the line |
+| "We hit this error before" | An error log is searched first, with the fix already written down |
 
 ## Quickstart
 
