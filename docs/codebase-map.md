@@ -51,6 +51,7 @@ Last regenerated: <<DATE>>.
 | `.claude/skills/emil-design-eng/` | Vendored third-party skill: interaction polish and the details that make components feel right. Required in the mockup step. |
 | `.claude/skills/animate/` | Vendored third-party skill: building an animation from the decision to animate through the curve. Required when a mockup shows motion. |
 | `.claude/skills/review-animations/` | Vendored third-party skill: reviewing existing motion against standards. Required after a build that includes motion. |
+| `.claude/skills/brag-slim/` | Vendored third-party skill (`latent-spaces/brag`): turns a project or website into a short launch video. Optional, not part of the mockup flow. |
 | `.claude/skills/break-ui/` | Vendored third-party skill: worst-case data pass over a piece of UI. Required before a mockup is presented. |
 | `.claude/agents/adversarial-reviewer.md` | Read-only reviewer agent. Every objection quotes the exact line. |
 
@@ -85,7 +86,7 @@ copied into a project by `scripts/bootstrap.sh`.
 | --- | --- |
 | `README.md` | What the template is, how to adopt it, what each piece does. |
 | `LICENSE` | MIT license. |
-| `.gitignore` | Ignored paths. |
+| `.gitignore` | Ignored paths, including `brag-output/` from the optional `brag-slim` skill. |
 | `.github/workflows/check.yml` | CI: runs the template self-check and the hook tests. |
 | `scripts/bootstrap.sh` | Copies the harness into a target project without overwriting existing files. |
 | `scripts/check-skills.sh` | Verifies each `skills-lock.json` entry (folder, frontmatter name, license, sha256). `--hash <dir>` prints a folder hash for updating the lockfile. |

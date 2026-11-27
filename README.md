@@ -53,7 +53,7 @@ there. Then:
 | Codebase map | `docs/codebase-map.md` | Every file and its purpose; part of the definition of done |
 | Error log | `docs/error-log.md` | Every error hit, with its resolution and prevention |
 | Design guidelines | `docs/design-guidelines.md` | Thirty-one rules against generated-looking UI and copy |
-| Design skills | `.claude/skills/{animate,apple-design,break-ui,emil-design-eng,review-animations}`, `skills-lock.json`, `THIRD_PARTY_LICENSES.md` | Third-party MIT skills copied in and pinned by hash; the mockup flow requires them |
+| Design skills | `.claude/skills/{animate,apple-design,brag-slim,break-ui,emil-design-eng,review-animations}`, `skills-lock.json`, `THIRD_PARTY_LICENSES.md` | Third-party MIT skills copied in and pinned by hash; the mockup flow requires all but `brag-slim` |
 | Skills check | `scripts/check-skills.sh` | Verifies the lockfile and the required-skills table; `--hash <dir>` prints a folder hash |
 | MCP setup | `.mcp.json`, `docs/mcp.md` | Project-scope servers, with rules for secrets and approval |
 | Settings | `.claude/settings.json` | Hook wiring, a small read-only allow list, deny rules for `.env` reads and force pushes, attribution off |
@@ -117,6 +117,9 @@ Five third-party skills (`apple-design`, `emil-design-eng`, `animate`,
 `review-animations`, `break-ui`, from `emilkowalski/skills`, MIT) live in
 `.claude/skills/` as real files and are pinned in `skills-lock.json`. The
 mockup flow requires them (see **Required design skills** in `AGENTS.md`).
+A sixth, `brag-slim` (from `latent-spaces/brag`, MIT), is optional and builds
+launch videos into `brag-output/`, which `.gitignore` excludes; it is vendored
+and pinned the same way.
 `impeccable` is optional and not vendored.
 
 - **Verbatim.** The files are never edited. They contain em dashes, so the

@@ -40,6 +40,14 @@
       "skillPath": "skills/review-animations/SKILL.md",
       "license": "MIT",
       "computedHash": "610163236942480a92b014632f8cc690778a4a7863ef8bf151f31be62efa14bb"
+    },
+    "brag-slim": {
+      "source": "latent-spaces/brag",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/latent-spaces/brag.git",
+      "skillPath": "skills/brag-slim/SKILL.md",
+      "license": "MIT",
+      "computedHash": "957dbe51da0fd429fc5e7ec11a4486624bb13d17f5ef1cc87f7e971217ffead5"
     }
   }
 }

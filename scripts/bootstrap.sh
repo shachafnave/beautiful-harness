@@ -37,7 +37,7 @@ agents_skipped=0
 lock_skipped=0
 license_skipped=0
 vendored_skipped=""
-vendored_skills="animate apple-design break-ui emil-design-eng review-animations"
+vendored_skills="animate apple-design brag-slim break-ui emil-design-eng review-animations"
 
 copy_file() {
   local rel=$1 merge_only=${2:-0}
@@ -151,7 +151,7 @@ touch "$gitignore"
 if [ -s "$gitignore" ] && [ "$(tail -c 1 "$gitignore" | wc -l | tr -d ' ')" -eq 0 ]; then
   echo >> "$gitignore"
 fi
-for line in ".claude/settings.local.json" ".claude/worktrees/" ".env" ".env.local" ".env.*.local"; do
+for line in ".claude/settings.local.json" ".claude/worktrees/" ".env" ".env.local" ".env.*.local" "brag-output/"; do
   grep -qxF "$line" "$gitignore" || echo "$line" >> "$gitignore"
 done
 
